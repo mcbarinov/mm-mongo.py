@@ -1,10 +1,10 @@
 [project]
 name = "mm-mongo"
-version = "0.0.1"
+version = "0.1.0"
 description = ""
 dependencies = [
     "pymongo~=4.8.0",
-    "mm-std~=0.0.1",
+    "mm-std~=0.1.0",
 ]
 requires-python = ">=3.12"
 

@@ -18,7 +18,7 @@ markdown-it-py==3.0.0
     # via rich
 mdurl==0.1.2
     # via markdown-it-py
-mm-std==0.0.1
+mm-std==0.1.0
     # via mm-mongo (pyproject.toml)
 pycparser==2.22
     # via cffi
