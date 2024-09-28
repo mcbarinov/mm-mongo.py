@@ -3,11 +3,12 @@ from typing import ClassVar
 
 import pytest
 from bson import ObjectId
-from mm_mongo import MongoCollection, MongoModel, ObjectIdStr
-from mm_mongo.mongo import drop_collection, mongo_query, parse_indexes, parse_str_index_model
 from pydantic import Field
 from pymongo import IndexModel
 from pymongo.errors import WriteError
+
+from mm_mongo import MongoCollection, MongoModel, ObjectIdStr
+from mm_mongo.mongo import drop_collection, mongo_query, parse_indexes, parse_str_index_model
 
 
 def test_object_id_str(mongo_database):

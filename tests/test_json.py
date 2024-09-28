@@ -1,5 +1,6 @@
-from mm_mongo import MongoModel, ObjectIdStr, json_dumps
 from pydantic import Field
+
+from mm_mongo import MongoModel, ObjectIdStr, json_dumps
 
 
 def test_json_dumps():
