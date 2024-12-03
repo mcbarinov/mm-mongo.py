@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections import OrderedDict
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import Any, ClassVar, Generic, Mapping, TypeVar, no_type_check
+from typing import Any, ClassVar, Mapping, no_type_check
 from urllib.parse import urlparse
 
 from bson import CodecOptions, Decimal128, ObjectId
@@ -13,9 +13,6 @@ from pydantic_core import CoreSchema, core_schema
 from pymongo import ASCENDING, DESCENDING, IndexModel, MongoClient, ReturnDocument
 from pymongo.database import Database
 from pymongo.results import DeleteResult, InsertManyResult, InsertOneResult, UpdateResult
-
-# noinspection PyProtectedMember
-from pymongo.typings import _DocumentType as DocumentType
 
 
 @dataclass
@@ -60,8 +57,8 @@ class MongoModel(BaseModel):
         return doc
 
     @classmethod
-    def init_collection(cls, database: Database[DocumentType]) -> MongoCollection[T]:
-        return MongoCollection(cls, database)  # type:ignore[arg-type]
+    def init_collection[T: MongoModel](cls: type[T], database: Database[Mapping[str, Any]]) -> MongoCollection[T]:
+        return MongoCollection[T](cls, database)
 
 
 class DecimalCodec(TypeCodec):
@@ -77,14 +74,13 @@ class DecimalCodec(TypeCodec):
         return value.to_decimal()
 
 
-T = TypeVar("T", bound=MongoModel)
+type SortType = None | list[tuple[str, int]] | str
+type QueryType = Mapping[str, object]
+type PKType = str | ObjectIdStr | int | ObjectId
+type DocumentType = Mapping[str, Any]
 
-SortType = None | list[tuple[str, int]] | str
-QueryType = Mapping[str, object]
-PKType = str | ObjectIdStr | int | ObjectId
 
-
-class MongoCollection(Generic[T]):
+class MongoCollection[T: MongoModel]:
     def __init__(
         self, model: type[T], database: Database[DocumentType], wrap_object_str_id: bool = True, tz_aware: bool = True
     ) -> None:
@@ -111,10 +107,10 @@ class MongoCollection(Generic[T]):
                 database.create_collection(model.__collection__, codec_options=codecs, validator=model.__validator__)
 
     def insert_one(self, doc: T) -> InsertOneResult:
-        return self.collection.insert_one(doc.to_doc())  # type:ignore[arg-type]
+        return self.collection.insert_one(doc.to_doc())
 
     def insert_many(self, docs: list[T], ordered: bool = True) -> InsertManyResult:
-        return self.collection.insert_many([obj.to_doc() for obj in docs], ordered=ordered)  # type:ignore[misc]
+        return self.collection.insert_many([obj.to_doc() for obj in docs], ordered=ordered)
 
     def _pk(self, pk: PKType) -> ObjectId:
         return ObjectId(pk) if self.wrap_object_id else pk  # type:ignore[return-value,arg-type]
