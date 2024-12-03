@@ -14,6 +14,11 @@ from pymongo import ASCENDING, DESCENDING, IndexModel, MongoClient, ReturnDocume
 from pymongo.database import Database
 from pymongo.results import DeleteResult, InsertManyResult, InsertOneResult, UpdateResult
 
+type SortType = None | list[tuple[str, int]] | str
+type QueryType = Mapping[str, object]
+type PKType = str | ObjectIdStr | int | ObjectId
+type DocumentType = Mapping[str, Any]
+
 
 @dataclass
 class MongoConnection:
@@ -72,12 +77,6 @@ class DecimalCodec(TypeCodec):
     @no_type_check
     def transform_bson(self, value):
         return value.to_decimal()
-
-
-type SortType = None | list[tuple[str, int]] | str
-type QueryType = Mapping[str, object]
-type PKType = str | ObjectIdStr | int | ObjectId
-type DocumentType = Mapping[str, Any]
 
 
 class MongoCollection[T: MongoModel]:

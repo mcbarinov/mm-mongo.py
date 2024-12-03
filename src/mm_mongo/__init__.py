@@ -1,5 +1,6 @@
 from .json_ import CustomJSONEncoder as CustomJSONEncoder
 from .json_ import json_dumps as json_dumps
+from .mongo import DocumentType as DocumentType
 from .mongo import MongoCollection as MongoCollection
 from .mongo import MongoConnection as MongoConnection
 from .mongo import MongoModel as MongoModel
