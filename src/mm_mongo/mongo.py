@@ -18,16 +18,17 @@ type SortType = None | list[tuple[str, int]] | str
 type QueryType = Mapping[str, object]
 type PKType = str | ObjectIdStr | int | ObjectId
 type DocumentType = Mapping[str, Any]
+type DatabaseAny = Database[DocumentType]
 
 
 @dataclass
 class MongoConnection:
-    client: MongoClient[dict[str, Any]]
-    database: Database[dict[str, Any]]
+    client: MongoClient[DocumentType]
+    database: DatabaseAny
 
     @staticmethod
     def connect(url: str, tz_aware: bool = False) -> MongoConnection:
-        client: MongoClient[dict[str, Any]] = MongoClient(url, tz_aware=tz_aware)
+        client: MongoClient[DocumentType] = MongoClient(url, tz_aware=tz_aware)
         database_name = MongoConnection.get_database_name_from_url(url)
         database = client[database_name]
         return MongoConnection(client=client, database=database)
