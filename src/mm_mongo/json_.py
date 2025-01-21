@@ -15,7 +15,7 @@ from .mongo import MongoModel
 
 
 class CustomJSONEncoder(JSONEncoder):
-    def default(self, o: Any) -> Any:
+    def default(self, o: Any) -> Any:  # noqa: ANN401
         if isinstance(o, Ok):
             return {"ok": o.ok}
         if isinstance(o, Err):

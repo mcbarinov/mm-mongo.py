@@ -11,7 +11,7 @@ from mm_mongo import MongoCollection, MongoModel, ObjectIdStr
 from mm_mongo.mongo import drop_collection, mongo_query, parse_indexes, parse_str_index_model
 
 
-def test_object_id_str(mongo_database):
+def test_object_id_str():
     class Data(MongoModel):
         __collection__ = "data_test_object_id_str"
         id: ObjectIdStr = Field(..., alias="_id")

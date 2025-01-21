@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 from collections import OrderedDict
+from collections.abc import Mapping
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import Any, ClassVar, Mapping, no_type_check
+from typing import TYPE_CHECKING, Any, ClassVar, no_type_check
 from urllib.parse import urlparse
 
 from bson import CodecOptions, Decimal128, ObjectId
@@ -12,7 +13,9 @@ from pydantic import BaseModel, GetCoreSchemaHandler
 from pydantic_core import CoreSchema, core_schema
 from pymongo import ASCENDING, DESCENDING, IndexModel, MongoClient, ReturnDocument
 from pymongo.database import Database
-from pymongo.results import DeleteResult, InsertManyResult, InsertOneResult, UpdateResult
+
+if TYPE_CHECKING:
+    from pymongo.results import DeleteResult, InsertManyResult, InsertOneResult, UpdateResult
 
 type SortType = None | list[tuple[str, int]] | str
 type QueryType = Mapping[str, object]
@@ -45,8 +48,10 @@ class MongoNotFoundError(Exception):
 
 
 class ObjectIdStr(str):
+    __slots__ = ()
+
     @classmethod
-    def __get_pydantic_core_schema__(cls, _source_type: Any, _handler: GetCoreSchemaHandler) -> CoreSchema:
+    def __get_pydantic_core_schema__(cls, _source_type: object, _handler: GetCoreSchemaHandler) -> CoreSchema:
         return core_schema.no_info_after_validator_function(ObjectIdStr, core_schema.any_schema())
 
 
@@ -72,11 +77,11 @@ class DecimalCodec(TypeCodec):
     bson_type = Decimal128
 
     @no_type_check
-    def transform_python(self, value):
+    def transform_python(self, value):  # noqa: ANN001, ANN201
         return Decimal128(value)
 
     @no_type_check
-    def transform_bson(self, value):
+    def transform_bson(self, value):  # noqa: ANN001, ANN201
         return value.to_decimal()
 
 
@@ -214,8 +219,7 @@ def parse_str_index_model(index: str) -> IndexModel:
         keys = []
         for i in index.split(","):
             order = DESCENDING if i.startswith("-") else ASCENDING
-            i = i.removeprefix("-")
-            keys.append((i, order))
+            keys.append((i.removeprefix("-"), order))
     else:
         order = DESCENDING if index.startswith("-") else ASCENDING
         index = index.removeprefix("-")
@@ -226,11 +230,7 @@ def parse_str_index_model(index: str) -> IndexModel:
 
 
 def mongo_query(**kwargs: object) -> QueryType:
-    query: dict[str, Any] = {}
-    for k, v in kwargs.items():
-        if v or v == 0:
-            query[k] = v
-    return query
+    return {k: v for k, v in kwargs.items() if v or v == 0}
 
 
 def drop_collection(database: Database, name: str) -> None:  # type:ignore[type-arg]
