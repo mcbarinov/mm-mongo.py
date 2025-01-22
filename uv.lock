@@ -406,7 +406,7 @@ wheels = [
 
 [[package]]
 name = "mm-mongo"
-version = "0.1.5"
+version = "0.1.6"
 source = { editable = "." }
 dependencies = [
     { name = "mm-std" },
@@ -427,7 +427,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "mm-std", specifier = "~=0.1.10" },
+    { name = "mm-std", specifier = "~=0.1.12" },
     { name = "pymongo", specifier = "~=4.10.1" },
 ]
 
@@ -445,7 +445,7 @@ dev = [
 
 [[package]]
 name = "mm-std"
-version = "0.1.10"
+version = "0.1.12"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cryptography" },
@@ -457,7 +457,7 @@ dependencies = [
     { name = "rich" },
 ]
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/30/ad/0fcb4791f823b4190dd8cc0f0b1fe81b3c492067b7e8c124ea162ece732c/mm_std-0.1.10-py3-none-any.whl", hash = "sha256:5be05a5430405ea61ae44c444cdbfb17a242fccdcab720e789b3084eef9ff65c", size = 14448 },
+    { url = "https://files.pythonhosted.org/packages/ca/18/ea37b98761b2d39ff2d45e985e4ef5eedae08a421cee3ee19088a9c0da03/mm_std-0.1.12-py3-none-any.whl", hash = "sha256:2e3d3ed745755096cecf9690ca2fb772abed1a4064935717ce3c8824b7cabd83", size = 14699 },
 ]
 
 [[package]]

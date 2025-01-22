@@ -1,11 +1,11 @@
 [project]
 name = "mm-mongo"
-version = "0.1.6"
+version = "0.1.7"
 description = ""
 requires-python = ">=3.12"
 dependencies = [
     "pymongo~=4.10.1",
-    "mm-std~=0.1.10",
+    "mm-std~=0.1.12",
 ]
 
 [build-system]
@@ -57,11 +57,14 @@ ignore = [
     "RET503", # flake8-return: implicit-return
     "COM812", # it's used in ruff formatter
 ]
+[tool.ruff.lint.pep8-naming]
+classmethod-decorators = ["field_validator"]
 [tool.ruff.lint.per-file-ignores]
 "tests/*.py" = ["ANN", "S"]
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
+
 
 [tool.bandit]
 exclude_dirs = ["tests"]
