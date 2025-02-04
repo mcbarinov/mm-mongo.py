@@ -4,7 +4,7 @@ from collections import OrderedDict
 from collections.abc import Mapping
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import TYPE_CHECKING, Any, ClassVar, no_type_check
+from typing import Any, ClassVar, no_type_check
 from urllib.parse import urlparse
 
 from bson import CodecOptions, Decimal128, ObjectId
@@ -13,9 +13,7 @@ from pydantic import BaseModel, GetCoreSchemaHandler
 from pydantic_core import CoreSchema, core_schema
 from pymongo import ASCENDING, DESCENDING, IndexModel, MongoClient, ReturnDocument
 from pymongo.database import Database
-
-if TYPE_CHECKING:
-    from pymongo.results import DeleteResult, InsertManyResult, InsertOneResult, UpdateResult
+from pymongo.results import DeleteResult, InsertManyResult, InsertOneResult, UpdateResult
 
 type SortType = None | list[tuple[str, int]] | str
 type QueryType = Mapping[str, object]
